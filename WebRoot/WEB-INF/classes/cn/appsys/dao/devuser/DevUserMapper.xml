@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="cn.appsys.dao.devuser.DevUserMapper">
+	<select id="getLoginUser" resultType="DevUser">
+		select u.* from dev_user u
+		<where>
+			<if test="devCode != null">
+				and u.devCode = #{devCode}
+			</if>
+		</where>
+	</select>
+	<select id="getUserById" resultType="DevUser">
+		select u.* from dev_user u where id=#{id}
+	</select>
+	
+	<select id="getUserList" resultType="DevUser">
+		select u.* from dev_user
+	</select>
+	
+	<insert id="addUser" parameterType="DevUser">
+		insert into dev_user(devCode, devName,devPassword,
+		<if test="devEmail != null and devEmail !=''">devEmail,</if>
+		<if test="devInfo != null and devInfo !=''">devInfo,</if>
+		createdBy,creationDate) 
+		values(#{devCode},#{devName},#{devPassword},
+		<if test="devEmail != null and devEmail !=''">#{devEmail},</if>
+		<if test="devInfo != null and devInfo !=''">#{devInfo},</if>
+		#{createdBy},#{creationDate})
+	</insert>
+	
+	<update id="updateUser" parameterType="DevUser">
+		update dev_user
+		<set>
+			<if test="devCode != null">devCode=#{devCode},</if>
+			<if test="devName != null">devName=#{devName},</if>
+			<if test="devPassword != null">devPassword=#{devPassword},</if>
+			<if test="devEmail != null">devEmail=#{devEmail},</if>
+			<if test="devInfo != null">devInfo=#{devInfo},</if>
+			<if test="modifyBy != null">modifyBy=#{modifyBy},</if>
+			<if test="modifyDate != null">modifyDate=#{modifyDate},</if>
+		</set>
+		where id = #{id}
+	</update>
+	
+	<delete id="deleteUser" parameterType="integer">
+		delete from  dev_user where id = #{id}
+	</delete>
+</mapper>
